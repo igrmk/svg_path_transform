@@ -24,7 +24,7 @@ setuptools.setup(
         'Operating System :: OS Independent',
     ],
     python_requires='>=3.6',
-    entry_points={'console_scripts': ['svg_path_transform = svg_path_transform:_main']},
+    entry_points={'console_scripts': ['svg_path_transform = svg_path_transform._cli:_main']},
     install_requires=['lark>=0.11.3'],
     package_data={'': ['*.lark']},
     include_package_data=True,
