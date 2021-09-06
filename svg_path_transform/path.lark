@@ -1,0 +1,36 @@
+start: (m command*)? _ws*
+command: _ws* (_m | _z | _l | _h | _v | _c | _s | _q | _t | _a)
+
+m: _ws* _m
+!_m: ("M" | "m") _ws* _xy_seq
+!_l: ("L" | "l") _ws* _xy_seq
+!_h: ("H" | "h") _ws* _n_seq
+!_v: ("V" | "v") _ws* _n_seq
+!_c: ("C" | "c") _ws* _c_seq
+!_s: ("S" | "s") _ws* _s_seq
+!_q: ("Q" | "q") _ws* _q_seq
+!_t: ("T" | "t") _ws* _xy_seq
+!_a: ("A" | "a") _ws* _a_seq
+!_z: "Z" | "z"
+
+_xy_seq: xy_arg | (xy_arg _cws? _xy_seq)
+_n_seq: n_arg | (n_arg _cws? _n_seq)
+_c_seq: c_arg | (c_arg _cws? _c_seq)
+_s_seq: sq_arg | (sq_arg _cws? _s_seq)
+_q_seq: sq_arg | (sq_arg _cws? _q_seq)
+_a_seq: a_arg | (a_arg _cws? _a_seq)
+
+xy_arg: _xy
+n_arg: _number
+c_arg: _xy _cws? _xy _cws? _xy
+sq_arg: _xy _cws? _xy
+a_arg: NUMBER _cws? NUMBER _cws? SIGNED_NUMBER _cws FLAG _cws? FLAG _cws? _xy
+
+_xy: _number _cws? _number
+_number: NUMBER | SIGNED_NUMBER
+_cws: (_ws+ ","? _ws*)|("," _ws*)
+_ws: "\t" | " " | "\n" | "\f" | "\r"
+
+FLAG: "0" | "1"
+%import common.NUMBER
+%import common.SIGNED_NUMBER
