@@ -19,7 +19,7 @@ def long_description():
             cut = True
         elif not cut:
             lines_.append(line)
-    return ''.join(lines_)
+    return '\n'.join(lines_)
 
 
 setuptools.setup(
