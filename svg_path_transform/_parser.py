@@ -1,6 +1,7 @@
 import lark as LA
-import os
+from os.path import dirname, abspath, join
 from decimal import Decimal
+from pathlib import Path
 
 
 class _PathTransformer(LA.Transformer):
@@ -17,9 +18,8 @@ class _PathTransformer(LA.Transformer):
     a_arg = list
 
 
-_script_path = os.path.dirname(os.path.realpath(__file__))
-with open(os.path.join(_script_path, 'path.lark'), 'r') as f:
-    _grammatic = LA.Lark(f.read())
+_here = abspath(dirname(__file__))
+_grammatic = LA.Lark(Path(join(_here, 'path.lark')).read_text())
 
 
 def parse_path(data):
