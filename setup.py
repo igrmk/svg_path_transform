@@ -8,13 +8,27 @@ here = abspath(dirname(__file__))
 def read(rel_path): return Path(join(here, rel_path)).read_text()
 
 
+def long_description():
+    lines = read('README.md').splitlines()
+    lines_ = []
+    cut = False
+    for line in lines:
+        if '<!-- end -->' in line:
+            cut = False
+        elif '<!-- cut -->' in line:
+            cut = True
+        elif not cut:
+            lines_.append(line)
+    return ''.join(lines_)
+
+
 setuptools.setup(
     name='svg_path_transform',
     version=read('svg_path_transform/__version__.py').split("'")[1],
     author='igrmk',
     author_email='igrmkx@gmail.com',
     description='SVG path data transformation toolkit',
-    long_description=read('README.md'),
+    long_description=long_description(),
     long_description_content_type='text/markdown',
     url='https://github.com/igrmk/svg_path_transform',
     packages=setuptools.find_packages(),

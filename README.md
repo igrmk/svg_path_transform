@@ -1,6 +1,9 @@
 SVG path data transformation toolkit
 ====================================
 
+<!-- cut -->
+[![Version](https://img.shields.io/pypi/v/svg-path-transform.svg)](https://pypi.org/project/svg-path-transform/)
+<!-- end -->
 A tool and a library for SVG path data transformations.
 Currently it supports a translation and a scaling.
 
