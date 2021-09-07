@@ -17,7 +17,7 @@ import svg_path_transform as S
 path = S.parse_path("m 2 2 l 2 2")
 path = S.translate_and_scale(path, s=(1, 3))
 path = S.translate_and_scale(path, t=(3, 4))
-print(S.path_to_string(path, sfig = 4))
+print(S.path_to_string(path, sfig=4))
 ```
 
 As a command line tool
