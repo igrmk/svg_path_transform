@@ -36,4 +36,6 @@ xmlstarlet ed -u '//_:path[1]/@d' -v "$new_path" < intput.svg > output.svg
 Installation
 ------------
 
-    pip3 install svg_path_transform
+```bash
+pip3 install svg_path_transform
+```
