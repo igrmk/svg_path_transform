@@ -7,14 +7,14 @@ from .__version__ import __version__
 
 
 def _main():
-    parser = argparse.ArgumentParser(description='SVG paths data transformer')
+    parser = argparse.ArgumentParser(description='SVG path data transformer')
     arg = parser.add_argument
     arg('--dx', metavar='N', type=float, default=0., help='translate x by N')
     arg('--dy', metavar='N', type=float, default=0., help='translate y by N')
     arg('--sx', metavar='N', type=float, default=1., help='scale x by N')
     arg('--sy', metavar='N', type=float, default=1., help='scale y by N')
     arg('--sfig', metavar='N', type=int, default=5, help='round to N significant figures')
-    arg('--ndig', metavar='N', type=int, default=None, help='round to N digits')
+    arg('--ndig', metavar='N', type=int, default=None, help='round to N decimal places')
     arg('-v', '--version', action='version', version=f'%(prog)s {__version__}')
     args = parser.parse_args()
     try:

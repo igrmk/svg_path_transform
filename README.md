@@ -10,7 +10,7 @@ Currently it supports a translation and a scaling.
 Usage
 -----
 
-As a library
+As a Python library
 
 ```python
 import svg_path_transform as S
@@ -23,14 +23,42 @@ print(S.path_to_string(path, sfig=4))
 As a command line tool
 
 ```bash
-svg_path_transform --dx 100 --dy 100 < input-path-data > output-path-data
+svg_path_transform --dx 100 --dy 100 <<< "m 2 2 l 2 2"
 ```
 
-A script to transform an SVG with a single path inside
+Command line parameters
+```
+usage: svg_path_transform [-h] [--dx N] [--dy N] [--sx N] [--sy N] [--sfig N] [--ndig N] [-v]
+
+SVG path data transformer
+
+optional arguments:
+  -h, --help     show this help message and exit
+  --dx N         translate x by N
+  --dy N         translate y by N
+  --sx N         scale x by N
+  --sy N         scale y by N
+  --sfig N       round to N significant figures
+  --ndig N       round to N decimal places
+  -v, --version  show program's version number and exit
+```
+
+Hint: a bash function to transform an SVG with a single path inside
 
 ```bash
-new_path="$(xmlstarlet sel -t -v '//_:path[1]/@d' input.svg | svg_path_transform --sx 2 --sy 2)"
-xmlstarlet ed -u '//_:path[1]/@d' -v "$new_path" < intput.svg > output.svg
+function svg_transform() {
+    selector='//_:path[1]/@d'
+    input=$(</dev/stdin)
+    old_path="$(xmlstarlet sel -t -v "$selector" <<< "$input")"
+    [[ $? -ne 0 ]] && echo "could not parse SVG" && return 1
+    new_path="$(svg_path_transform "$@" <<< "$old_path")"
+    [[ $? -ne 0 ]] && echo "could not parse path" && return 1
+    xmlstarlet ed -u "$selector" -v "$new_path" <<< "$input"
+    [[ $? -ne 0 ]] && echo "could not update SVG" && return 1
+    return 0
+}
+
+svg_transform --sx 2 --sy 2 < intput.svg > output.svg
 ```
 
 Installation
