@@ -1,26 +1,17 @@
 name: Publish
 
 on:
-  push:
-    tags:
-      - 'v*'
+  push: {tags: ['v*']}
 
 jobs:
   publish:
     name: Publish
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Initialize
-        uses: actions/setup-python@v1
-        with:
-          python-version: 3.9
-      - name: Deps
-        run: pip install wheel
-      - name: Build
-        run: python setup.py sdist bdist_wheel
-      - name: Upload
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          password: ${{ secrets.PYPI_PASSWORD }}
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with: {python-version: 3.9}
+      - run: pip install wheel
+      - run: python setup.py sdist bdist_wheel
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with: {password: "${{ secrets.PYPI_PASSWORD }}"}
