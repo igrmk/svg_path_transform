@@ -1,11 +1,11 @@
-from os.path import abspath, dirname, join
 import setuptools
+import subprocess
+from os.path import abspath, dirname, join
 from pathlib import Path
 
-here = abspath(dirname(__file__))
 
-
-def read(rel_path): return Path(join(here, rel_path)).read_text()
+def here(rel_path): return join(abspath(dirname(__file__)), rel_path)
+def read(rel_path): return Path(here(rel_path)).read_text()
 
 
 def long_description():
@@ -13,33 +13,16 @@ def long_description():
     lines_ = []
     cut = False
     for line in lines:
-        if '<!-- end -->' in line:
-            cut = False
-        elif '<!-- cut -->' in line:
+        if '<!-- cut -->' in line:
             cut = True
+        elif '<!-- end -->' in line:
+            cut = False
         elif not cut:
             lines_.append(line)
     return '\n'.join(lines_)
 
 
 setuptools.setup(
-    name='svg_path_transform',
-    version=read('svg_path_transform/__version__.py').split("'")[1],
-    author='igrmk',
-    author_email='igrmkx@gmail.com',
-    description='SVG path data transformation toolkit',
+    version=subprocess.check_output([here('describe-version')]).decode('utf-8').strip(),
     long_description=long_description(),
-    long_description_content_type='text/markdown',
-    url='https://github.com/igrmk/svg_path_transform',
-    packages=setuptools.find_packages(),
-    classifiers=[
-        'Programming Language :: Python :: 3',
-        'License :: OSI Approved :: MIT License',
-        'Operating System :: OS Independent',
-    ],
-    python_requires='>=3.6',
-    entry_points={'console_scripts': ['svg_path_transform = svg_path_transform._cli:_main']},
-    install_requires=['lark>=0.11.3'],
-    package_data={'': ['*.lark']},
-    include_package_data=True,
 )

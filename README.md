@@ -27,6 +27,7 @@ svg_path_transform --dx 100 --dy 100 <<< "m 2 2 l 2 2"
 ```
 
 Command line parameters
+
 ```
 usage: svg_path_transform [-h] [--dx N] [--dy N] [--sx N] [--sy N] [--sfig N] [--ndig N] [-v]
 
