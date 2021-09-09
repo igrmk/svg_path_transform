@@ -66,5 +66,5 @@ Installation
 ------------
 
 ```bash
-pip3 install svg_path_transform
+pip install svg_path_transform
 ```
