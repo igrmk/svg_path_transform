@@ -4,16 +4,16 @@ from math import pi, cos, sin, atan2, sqrt
 def _tr_scale_arc_rel(v, t, s):
     sx, sy = s[0], s[1]
     rx, ry = v[0], v[1]
-    θ = v[2] * pi / 180
+    φ = v[2] * pi / 180
     sweep = v[4]
-    kx = sx**2 * (rx**2 * cos(θ)**2 + ry**2 * sin(θ)**2)
-    ky = sy**2 * (rx**2 * sin(θ)**2 + ry**2 * cos(θ)**2)
-    ks = sx * sy * (rx**2 - ry**2) * sin(2 * θ)
-    θ_ = atan2(ks, kx - ky) / 2
+    kx = sx**2 * (rx**2 * cos(φ)**2 + ry**2 * sin(φ)**2)
+    ky = sy**2 * (rx**2 * sin(φ)**2 + ry**2 * cos(φ)**2)
+    ks = sx * sy * (rx**2 - ry**2) * sin(2 * φ)
+    φ_ = atan2(ks, kx - ky) / 2
     rx_ = rx * ry * sx * sy * sqrt(2 / (kx + ky - sqrt(ks**2 + (kx - ky)**2)))
     ry_ = rx * ry * sx * sy * sqrt(2 / (kx + ky + sqrt(ks**2 + (kx - ky)**2)))
     sweep_ = (sweep + (sx < 0) + (sy < 0)) % 2
-    return [rx_, ry_, θ_ * 180 / pi, v[3], sweep_, v[5] * sx, v[6] * sy]
+    return [rx_, ry_, φ_ * 180 / pi, v[3], sweep_, v[5] * sx, v[6] * sy]
 
 
 def _tr_scale_arc_abs(v, t, s):
@@ -59,10 +59,10 @@ _tr_scale_dict = {
 def translate_and_scale(d, t=(0, 0), s=(1, 1)):
     first = True
 
-    def inner(vs, t, s):
+    def inner(vs):
         nonlocal first
         yield vs[0]
         for x in vs[1:]:
             yield _tr_scale_dict['M' if first else vs[0]](x, t, s)
             first = False
-    return [list(inner(vs, t, s)) for vs in d]
+    return [list(inner(vs)) for vs in d]
