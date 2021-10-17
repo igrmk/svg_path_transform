@@ -121,7 +121,7 @@ class _SegmentizeVisitor:
         self.data = []
         self.cmd_data = []
         self.last_cmd = None
-        self.last_m = [0., 0.]
+        self.last_m = None
 
     def cmd(self, cmd):
         new_cmd, proc = getattr(self, cmd)()
@@ -144,7 +144,8 @@ class _SegmentizeVisitor:
         def proc(v):
             self.pos[0] += v[0]
             self.pos[1] += v[1]
-            self.last_m = self.pos[:]
+            if self.last_m is None:
+                self.last_m = self.pos[:]
             self.ctrl_c = self.pos[:]
             self.ctrl_q = self.pos[:]
             return [v]
@@ -153,7 +154,8 @@ class _SegmentizeVisitor:
     def M(self):
         def proc(v):
             self.pos = v
-            self.last_m = self.pos[:]
+            if self.last_m is None:
+                self.last_m = self.pos[:]
             self.ctrl_c = self.pos[:]
             self.ctrl_q = self.pos[:]
             return [v]
@@ -353,6 +355,7 @@ class _SegmentizeVisitor:
         self.pos = self.last_m[:]
         self.ctrl_c = self.pos[:]
         self.ctrl_q = self.pos[:]
+        self.last_m = None
         return 'z', None
 
     def Z(self):
@@ -363,6 +366,7 @@ class _SegmentizeVisitor:
         self.pos = self.last_m[:]
         self.ctrl_c = self.pos[:]
         self.ctrl_q = self.pos[:]
+        self.last_m = None
         return 'Z', None
 
 
