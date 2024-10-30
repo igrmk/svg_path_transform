@@ -88,7 +88,13 @@ def _arc_to_segments(cx, cy, rx, ry, φ, θ1, θ2, d):
     return _arc_to_segments(cx, cy, rx, ry, φ, θ1, θ12, d) + _arc_to_segments(cx, cy, rx, ry, φ, θ12, θ2, d)
 
 
+def _signed_modulus(x, y):
+    result = x % y
+    return result if x >= 0 else result - y
+
+
 def _arc_center_params(x1, y1, x2, y2, large, sweep, rx, ry, φ):
+    # See https://www.w3.org/TR/SVG/implnote.html for the algorithm and naming explanation
     rx, ry = abs(rx), abs(ry)
     x12 = (x1 - x2) / 2
     y12 = (y1 - y2) / 2
@@ -106,9 +112,14 @@ def _arc_center_params(x1, y1, x2, y2, large, sweep, rx, ry, φ):
     cx = cos(φ) * cx_ - sin(φ) * cy_ + (x1 + x2) / 2
     cy = cos(φ) * cy_ + sin(φ) * cx_ + (y1 + y2) / 2
     θ1 = _angle([1., 0.], [(x1_ - cx_) / rx, (y1_ - cy_) / ry])
-    dθ = _angle([(x1_ - cx_) / rx, (y1_ - cy_) / ry], [(-x1_ - cx_) / rx, (-y1_ - cy_) / ry]) % (2 * pi)
-    dθ = (-1 if sweep == 0 else 1) * dθ
+    dθ = _angle([(x1_ - cx_) / rx, (y1_ - cy_) / ry], [(-x1_ - cx_) / rx, (-y1_ - cy_) / ry])
+    dθ = _signed_modulus(dθ, 2 * pi)
+    if sweep == 0 and dθ > 0:
+        dθ -= 2 * pi
+    elif sweep == 1 and dθ < 0:
+        dθ += 2 * pi
     θ2 = θ1 + dθ
+    # Angles θ1 and θ2 are relative really to the (1, 0) vector if the ellipse is not inclined
     return cx, cy, rx, ry, θ1, θ2
 
 
