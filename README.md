@@ -17,6 +17,7 @@ import svg_path_transform as S
 path = S.parse_path("m 2 2 l 2 2")
 path = S.translate_and_scale(path, s=(1, 3))
 path = S.translate_and_scale(path, t=(3, 4))
+path = S.morph(path, lambda p: [p[0] * 2, p[1] * 2])
 print(S.path_to_string(path, sfig=4))
 ```
 
@@ -29,19 +30,21 @@ svg_path_transform --dx 100 --dy 100 <<< "m 2 2 l 2 2"
 Command line parameters
 
 ```
-usage: svg_path_transform [-h] [--dx N] [--dy N] [--sx N] [--sy N] [--sfig N] [--ndig N] [-v]
+usage: svg_path_transform [-h] [--dx N] [--dy N] [--sx N] [--sy N] [--sfig N] [--ndig N] [--seg N] [--pretty-print] [-v]
 
 SVG path data transformer
 
-optional arguments:
-  -h, --help     show this help message and exit
-  --dx N         translate x by N
-  --dy N         translate y by N
-  --sx N         scale x by N
-  --sy N         scale y by N
-  --sfig N       round to N significant figures
-  --ndig N       round to N decimal places
-  -v, --version  show program's version number and exit
+options:
+  -h, --help      show this help message and exit
+  --dx N          translate x by N
+  --dy N          translate y by N
+  --sx N          scale x by N
+  --sy N          scale y by N
+  --sfig N        round to N significant figures
+  --ndig N        round to N decimal places
+  --seg N         convert to straight line segments with a given max distance
+  --pretty-print  pretty print the input path and exit
+  -v, --version   show program's version number and exit
 ```
 
 Hint: a bash function to transform an SVG with a single path inside
