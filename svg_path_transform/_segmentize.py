@@ -94,6 +94,24 @@ def _signed_modulus(x, y):
 
 
 def _arc_center_params(x1, y1, x2, y2, large, sweep, rx, ry, φ):
+    """Converts from endpoint to center parametrization
+
+    Parameters:
+        x1, y1: Current point on the path
+        x2, y2: Final point of the arc
+        large: 0 if an arc spans less than or equal to 180 degrees,
+               or 1 if an arc spans greater than 180 degrees
+        sweep: 0 if and arc goes counterclockwise,
+               or 1 if it goes clockwise
+        rx, ry: Radii of the ellipse
+        φ: Angle from the x-axis of the current coordinate system to the x-axis of the ellipse
+
+    Returns:
+        tuple:
+            cx, cy: Center of the ellipse
+            rx, ry: Radii of the ellipse, corrected if out of range
+            θ1, θ2: Start and end parametrization angles
+    """
     # See https://www.w3.org/TR/SVG/implnote.html for the algorithm and naming explanation
     rx, ry = abs(rx), abs(ry)
     x12 = (x1 - x2) / 2
