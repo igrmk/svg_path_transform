@@ -17,13 +17,14 @@ def _main():
     arg('--sy', metavar='N', type=float, default=1., help='scale y by N')
     arg('--sfig', metavar='N', type=int, default=5, help='round to N significant figures')
     arg('--ndig', metavar='N', type=int, default=None, help='round to N decimal places')
-    arg('--seg', metavar='N', type=float, default=None, help='convert to line segments with given max distance')
-    arg('--print-parsed-path', action='store_true', help='print parsed path')
+    arg('--seg', metavar='N', type=float, default=None,
+        help='convert to straight line segments with a given max distance')
+    arg('--pretty-print', action='store_true', help='pretty print the input path and exit')
     arg('-v', '--version', action='version', version=f'%(prog)s {__version__}')
     args = parser.parse_args()
     try:
         d = parse_path(sys.stdin.read())
-        if args.print_parsed_path:
+        if args.pretty_print:
             for command in d:
                 print(command[0])
                 for params in command[1:]:
