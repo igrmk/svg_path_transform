@@ -137,7 +137,7 @@ def _arc_center_params(x1, y1, x2, y2, large, sweep, rx, ry, φ):
     elif sweep == 1 and dθ < 0:
         dθ += 2 * pi
     θ2 = θ1 + dθ
-    # Angles θ1 and θ2 are relative really to the (1, 0) vector if the ellipse is not inclined
+    # Angles θ1 and θ2 are really relative to the (1, 0) vector if the ellipse is not inclined
     return cx, cy, rx, ry, θ1, θ2
 
 
