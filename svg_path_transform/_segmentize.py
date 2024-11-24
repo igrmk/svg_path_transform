@@ -93,7 +93,7 @@ def _signed_modulus(x, y):
     return result if x >= 0 else result - y
 
 
-def _arc_center_params(x1, y1, x2, y2, large, sweep, rx, ry, φ):
+def _convert_arc_endpoint_params_to_center_params(x1, y1, x2, y2, large, sweep, rx, ry, φ):
     """Converts from endpoint to center parametrization
 
     Parameters:
@@ -281,7 +281,8 @@ class _SegmentizeVisitor:
             φ = deg / 180 * pi
             x1, y1 = self.pos
             x2, y2 = x1 + dx, y1 + dy
-            cx, cy, rx, ry, θ1, θ2 = _arc_center_params(x1, y1, x2, y2, large, sweep, rx, ry, φ)
+            cx, cy, rx, ry, θ1, θ2 =\
+                _convert_arc_endpoint_params_to_center_params(x1, y1, x2, y2, large, sweep, rx, ry, φ)
             ps = _arc_to_segments(cx, cy, rx, ry, φ, θ1, θ2, self.max_distance)
             _make_relative(ps)
             ps[0][0] -= self.pos[0]
@@ -301,7 +302,8 @@ class _SegmentizeVisitor:
                 return lproc([x2, y2])
             φ = deg / 180 * pi
             x1, y1 = self.pos
-            cx, cy, rx, ry, θ1, θ2 = _arc_center_params(x1, y1, x2, y2, large, sweep, rx, ry, φ)
+            cx, cy, rx, ry, θ1, θ2 =\
+                _convert_arc_endpoint_params_to_center_params(x1, y1, x2, y2, large, sweep, rx, ry, φ)
             ps = _arc_to_segments(cx, cy, rx, ry, φ, θ1, θ2, self.max_distance)
             self.pos = [x2, y2]
             self.ctrl_c = self.pos[:]
